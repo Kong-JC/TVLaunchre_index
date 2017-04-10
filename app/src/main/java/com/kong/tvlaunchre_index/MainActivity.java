@@ -1,10 +1,7 @@
 package com.kong.tvlaunchre_index;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -26,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initView() {
         iv_left = (ImageView) findViewById(R.id.iv_left);
         iv_center_one = (ImageView) findViewById(R.id.iv_center_one);
@@ -47,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         onFocusChangeListener(iv_center_one);
         onFocusChangeListener(iv_center_two);
         onFocusChangeListener(iv_right);
-        
 
     }
 
@@ -56,35 +52,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    Log.i(TAG, " -=-=-=-=- initView: hasFocus: " + hasFocus + " | id:" + v.getId());
                     v.startAnimation(zoomAnimation(1.0f, 1.2f, 100));
                 } else {
-                    Log.i(TAG, " -=-=-=-=- initView: hasFocus: " + hasFocus + " | id:" + v.getId());
-                    v.startAnimation(zoomAnimation(1.1f, 1.0f, 100));
+                    v.startAnimation(zoomAnimation(1.2f, 1.0f, 100));
                 }
             }
         });
     }
 
     public static Animation zoomAnimation(float startScale, float endScale, int duration){
-        ScaleAnimation anim = new ScaleAnimation(startScale, endScale, startScale, endScale, 
+        ScaleAnimation anim = new ScaleAnimation(startScale, endScale, startScale, endScale,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         anim.setFillAfter(true);
         anim.setDuration(duration);
         return anim;
     }
 
+    MyDialog myDialog;
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_left:
                 Toast.makeText(this, "iv_left", Toast.LENGTH_SHORT).show();
+
+                myDialog = new MyDialog(this,R.style.dialog_custom);
+//                myDialog.showDialog();
+
                 break;
             case R.id.iv_center_one:
                 Toast.makeText(this, "iv_center_one", Toast.LENGTH_SHORT).show();
+                myDialog.setLayout(R.layout.dialog_one_layout);
+                myDialog.show();
                 break;
             case R.id.iv_center_two:
                 Toast.makeText(this, "iv_center_two", Toast.LENGTH_SHORT).show();
+
+                myDialog.
+
                 break;
             case R.id.iv_right:
                 Toast.makeText(this, "iv_right", Toast.LENGTH_SHORT).show();
