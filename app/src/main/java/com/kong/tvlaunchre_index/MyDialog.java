@@ -141,7 +141,8 @@ public class MyDialog extends Dialog {
                 break;
             case 11:
                 myBeanList = new ArrayList<>();
-                myBeanList.add(new MyBean(111, "无线网络", "开启", true));
+
+                myBeanList.add(new MyBean(111, "无线网络", Utils.wifiIsOpen(context) ? "开启" : "关闭", true));
                 myBeanList.add(new MyBean(112, "WIFI - xxx - 01", "已链接", true));
                 myBeanList.add(new MyBean(113, "WIFI - xxx - 01", "已保存", true));
                 myBeanList.add(new MyBean(114, "WIFI - xxx - 01", "WPA2-PSK", true));
@@ -175,7 +176,7 @@ public class MyDialog extends Dialog {
                 if (t == 1) {
                     return super.onKeyDown(keyCode, event);
                 }
-            }else if (charArray.length == 2) {
+            } else if (charArray.length == 2) {
                 loadNext(0);
             } else if (charArray.length == 3) {
                 loadNext(t);

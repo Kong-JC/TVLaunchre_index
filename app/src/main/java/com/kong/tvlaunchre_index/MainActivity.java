@@ -1,6 +1,8 @@
 package com.kong.tvlaunchre_index;
 
+import android.content.Context;
 import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -106,6 +108,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.iv_left:
                 Toast.makeText(this, "iv_left", Toast.LENGTH_SHORT).show();
 
+                WifiManager wm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+                Log.i(TAG, " -=-=-=-=- onClick: State:" + wm.getWifiState());
+                
                 List<ScanResult> scanResultList = Utils.getWiFiSignalSourceList(this);
                 for (ScanResult scanResult : scanResultList) {
                     Log.i(TAG, " -=-=-=-=- onClick: scanResult:" + scanResult.toString());
