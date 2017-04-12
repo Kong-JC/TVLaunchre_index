@@ -1,23 +1,19 @@
 package com.kong.tvlaunchre_index;
 
-import android.content.Context;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,8 +21,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final String TAG = "MainActivity";
 
-    ImageView iv_left, iv_center_one, iv_center_two, iv_right;
-    TextView tv_date, tv_time;
+    private ImageView iv_left, iv_center_one, iv_center_two, iv_right;
+    private TextView tv_date, tv_time;
+
+    private static Intent intent;
+
 
     private Handler handler = new Handler() {
         @Override
@@ -50,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initView();
         updateTime();
+        intent = Utils.getAppIntent(this, "com.android.chrome");
 
     }
 
@@ -100,36 +100,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return anim;
     }
 
-    MyDialog myDialog;
+//    SettingDialog settingDialog;
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_left:
-                Toast.makeText(this, "iv_left", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "iv_left", Toast.LENGTH_SHORT).show();
 
-                WifiManager wm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-                Log.i(TAG, " -=-=-=-=- onClick: State:" + wm.getWifiState());
-                
-                List<ScanResult> scanResultList = Utils.getWiFiSignalSourceList(this);
-                for (ScanResult scanResult : scanResultList) {
-                    Log.i(TAG, " -=-=-=-=- onClick: scanResult:" + scanResult.toString());
-                }
+                // LocalAppInfoBean{appLabel='Chrome', appIcon=android.graphics.drawable.BitmapDrawable@41868d38, 
+                // intent=Intent { 
+                //      act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 pkg=com.android.chrome cmp=com.android.chrome/com.google.android.apps.chrome.Main 
+                // }, 
+                // pkgName='com.android.chrome', 
+                // isAdd=false, listId=0}
+
+                String url = SPUtils.getString(this, SPUtils.ADVANCED_SETTINGS_PASSWORD_KEY);
+                Uri content_url = Uri.parse(url);
+                intent.setData(content_url);
+                startActivity(intent);
 
                 break;
             case R.id.iv_center_one:
-                Toast.makeText(this, "iv_center_one", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "iv_center_one", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.iv_center_two:
-                Toast.makeText(this, "iv_center_two", Toast.LENGTH_SHORT).show();
-                myDialog = new MyDialog(this, R.style.dialog_custom);
-//                myDialog.setLayout(R.layout.dialog_layout);
-                myDialog.show();
-
-
+//                Toast.makeText(this, "iv_center_two", Toast.LENGTH_SHORT).show();
+//                SettingDialog settingDialog = new SettingDialog(this, 0, null);
+//                settingDialog.show();
+                new SettingDialog(this, 0, null, null).show();
                 break;
             case R.id.iv_right:
-                Toast.makeText(this, "iv_right", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "iv_right", Toast.LENGTH_SHORT).show();
+                new InputDialog(this, "高级设置", 0).show();
                 break;
         }
     }

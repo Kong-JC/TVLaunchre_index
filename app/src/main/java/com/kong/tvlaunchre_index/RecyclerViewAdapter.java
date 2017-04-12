@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -30,31 +29,32 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.adapterOnClickListener = adapterOnClickListener;
     }
 
+
     public RecyclerViewAdapter(List<MyBean> myBeanList) {
         this.myBeanList = myBeanList;
     }
 
-    public List<MyBean> getMyBeanList(){
+    public List<MyBean> getMyBeanList() {
         return this.myBeanList;
     }
-    
-    public void removeAllItem(){
-        int count = this.myBeanList.size();
-        this.myBeanList.removeAll(myBeanList);
-        notifyItemRangeRemoved(0,count);
-    }
-    
-    public void removeItem(int position) {
-        Log.i(TAG, " -=-=-=-=- removeItem: position:" + position);
-        this.myBeanList.remove(position);
-        notifyItemRemoved(position);
-        for (MyBean bean : myBeanList) {
-            Log.i(TAG, " -=-=-=-=- addItem: bean:" + bean.toString());
-        }
-        Log.i(TAG, " -=-=-=-=- removeItem: 分割线: -=-=-=-=- ");
+
+    public int changeItem(MyBean myBean) {
+        int i = this.myBeanList.indexOf(myBean);
+        Log.i(TAG, " -=-=-=-=- changeItem: indexOf:" + this.myBeanList.indexOf(myBean));
+        MyBean myBean1 = this.myBeanList.set(i, myBean);
+        notifyItemChanged(i);
+        Log.i(TAG, " -=-=-=-=- changeItem: myBean1:" + myBean1);
+//        this.myBeanList.set()
+        return i;
     }
 
-    public void addItem(MyBean myBean,int position) {
+    public void removeAllItem() {
+        int count = this.myBeanList.size();
+        this.myBeanList.removeAll(myBeanList);
+        notifyItemRangeRemoved(0, count);
+    }
+
+    public void addItem(MyBean myBean) {
         this.myBeanList.add(myBean);
         notifyItemInserted(0);
     }
@@ -69,7 +69,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         final MyBean myBean = myBeanList.get(position);
         holder.tv_left.setText(myBean.left_text);
         holder.tv_right.setText(myBean.right_text);
+        holder.tv_right.setSelected(true);
+        if (myBean.isIcon) {
+            holder.iv_icon.setVisibility(View.VISIBLE);
+        } else {
+            holder.iv_icon.setVisibility(View.INVISIBLE);
+        }
         holder.ll_item_layout.setFocusable(true);
+//        holder.ll_item_layout.setFocusableInTouchMode(true);
         holder.ll_item_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,11 +94,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         TextView tv_left, tv_right;
         ImageView iv_icon;
-        LinearLayout ll_item_layout;
+        android.support.constraint.ConstraintLayout ll_item_layout;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ll_item_layout = (LinearLayout) itemView.findViewById(R.id.ll_item_layout);
+            ll_item_layout = (android.support.constraint.ConstraintLayout) itemView.findViewById(R.id.ll_item_layout);
             tv_left = (TextView) itemView.findViewById(R.id.tv_left);
             tv_right = (TextView) itemView.findViewById(R.id.tv_right);
             iv_icon = (ImageView) itemView.findViewById(R.id.iv_icon);

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_item_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="10dp"
     android:layout_marginTop="10dp"
-    android:background="@drawable/dialog_item_select"
+    android:background="@drawable/dialog_item_hovered"
     android:orientation="horizontal"
     android:paddingBottom="10dp"
     android:paddingLeft="20dp"
@@ -17,29 +19,47 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="7"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
         android:text="asd"
         android:textColor="#fff"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_right"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="2"
-        android:gravity="center"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="24dp"
+        android:gravity="right|center"
         android:text="asd"
         android:textColor="#fff"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/tv_left"
+        app:layout_constraintRight_toLeftOf="@+id/iv_icon"
+    android:ellipsize="marquee"
+    android:focusable="true"
+    android:marqueeRepeatLimit="marquee_forever"
+    android:singleLine="true"
+        app:layout_constraintTop_toTopOf="parent" />
+        <!--android:lines="3"-->
 
     <ImageView
         android:id="@+id/iv_icon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginRight="16dp"
         android:src="@drawable/icon_triangle"
-        android:layout_weight="1" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499" />
 
-
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
