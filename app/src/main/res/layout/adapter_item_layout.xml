@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_item_layout"
@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/tv_left"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="0dp"
@@ -24,10 +24,7 @@
         android:layout_marginTop="0dp"
         android:text="asd"
         android:textColor="#fff"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/tv_right"
@@ -38,28 +35,21 @@
         android:layout_marginRight="24dp"
         android:gravity="right|center"
         android:text="asd"
+        android:layout_weight="2"
         android:textColor="#fff"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/tv_left"
-        app:layout_constraintRight_toLeftOf="@+id/iv_icon"
     android:ellipsize="marquee"
     android:focusable="true"
     android:marqueeRepeatLimit="marquee_forever"
-    android:singleLine="true"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:singleLine="true" />
         <!--android:lines="3"-->
 
     <ImageView
         android:id="@+id/iv_icon"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginRight="16dp"
-        android:src="@drawable/icon_triangle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+        android:src="@drawable/icon_triangle" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

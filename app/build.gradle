@@ -29,4 +29,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:percent:22.2.0'
     compile 'com.github.liuguangqiang.SuperRecyclerView:super-recyclerview:0.1.2'
+    compile 'com.google.code.gson:gson:2.8.0'
 }

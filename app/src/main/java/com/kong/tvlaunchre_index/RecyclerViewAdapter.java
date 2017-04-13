@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -94,11 +95,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         TextView tv_left, tv_right;
         ImageView iv_icon;
-        android.support.constraint.ConstraintLayout ll_item_layout;
+        //        android.support.constraint.ConstraintLayout ll_item_layout;
+        LinearLayout ll_item_layout;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ll_item_layout = (android.support.constraint.ConstraintLayout) itemView.findViewById(R.id.ll_item_layout);
+//            ll_item_layout = (android.support.constraint.ConstraintLayout) itemView.findViewById(R.id.ll_item_layout);
+            ll_item_layout = (LinearLayout) itemView.findViewById(R.id.ll_item_layout);
             tv_left = (TextView) itemView.findViewById(R.id.tv_left);
             tv_right = (TextView) itemView.findViewById(R.id.tv_right);
             iv_icon = (ImageView) itemView.findViewById(R.id.iv_icon);

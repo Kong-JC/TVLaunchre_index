@@ -21,6 +21,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.kong.tvlaunchre_index.Utils.switchWIFI;
+
 /**
  * Created by Kong on 2017/4/11.
  */
@@ -101,28 +103,10 @@ public class SettingDialog extends Dialog {
         recyclerViewAdapter.setAdapterOnClickListener(new RecyclerViewAdapter.AdapterOnClickListener() {
             @Override
             public void onClick(MyBean myBean, int position) {
-//                Toast.makeText(mContext, "MyBean:" + myBean.toString(), Toast.LENGTH_SHORT).show();
                 if (myBean.scanResult != null) {
-//                    WifiManager manager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
-//                    WifiConfiguration config = new WifiConfiguration();
-//                    config.SSID = "\"WIFI_NAME\"";
-//                    config.preSharedKey = "\"PASSWORD\"";
-//                    config.hiddenSSID = true;
-//                    config.status = WifiConfiguration.Status.ENABLED;
-//                    config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
-//                    config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
-//                    config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
-//                    config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
-//                    config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
-//                    config.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
-//                    int netId = manager.addNetwork(config);
-//                    boolean isConn = manager.enableNetwork(netId, true);
-//                    Log.i(TAG, " -=-=-=-=- onClick: 是否连接成功:" + isConn);
-
                     InputDialog inputDialog = new InputDialog(mContext, myBean.scanResult.SSID, 2);
                     inputDialog.setScanResult(myBean.scanResult);
                     inputDialog.show();
-
                 }
                 loadNext(myBean);
             }
@@ -193,24 +177,27 @@ public class SettingDialog extends Dialog {
                 break;
             case 11:
                 myBeanList = new ArrayList<>();
-
-                myBeanList.add(new MyBean(111, "无线网络", Utils.wifiIsOpen(mContext) ? "开启" : "关闭", true));
-
-                MyBean myBean_ = null;
+                myBeanList.add(new MyBean(111, "无线网络", switchWIFI(mContext) ? "开启" : "关闭", true));
+                MyBean myBean_;
+                String rssi;
                 for (ScanResult scanResult : Utils.getWiFiSignalSourceList(mContext)) {
-                    if (scanResult.level >= 0 && scanResult.level <= 50) {
-                        myBean_ = new MyBean(112, scanResult.SSID, "强", true);
-                        myBean_.scanResult = scanResult;
-                    } else if (scanResult.level <= 0 && scanResult.level >= -50) {
-                        myBean_ = new MyBean(112, scanResult.SSID, "中", true);
-                        myBean_.scanResult = scanResult;
-                    } else if (scanResult.level <= -51 && scanResult.level >= -200) {
-                        myBean_ = new MyBean(112, scanResult.SSID, "弱", true);
-                        myBean_.scanResult = scanResult;
+                    if (scanResult.level >= 200 && scanResult.level <= 135) {
+                        rssi = "较强";
+                    } else if (scanResult.level >= 134 && scanResult.level <= 69) {
+                        rssi = "强";
+                    } else if (scanResult.level >= 68 && scanResult.level <= 5) {
+                        rssi = "一般";
+                    } else if (scanResult.level <= 5 && scanResult.level >= -61) {
+                        rssi = "差";
+                    } else if (scanResult.level <= -61 && scanResult.level >= -126) {
+                        rssi = "较差";
+                    } else {
+                        rssi = "很差";
                     }
+                    myBean_ = new MyBean(112, scanResult.SSID, rssi, true);
+                    myBean_.scanResult = scanResult;
                     myBeanList.add(myBean_);
                 }
-
                 changeList("无线网络", myBeanList);
                 break;
             case 12:
@@ -231,52 +218,19 @@ public class SettingDialog extends Dialog {
                 new InputDialog(mContext, "设置新密码", 31).show();
                 break;
             case 32:
-//                new InputDialog(mContext,"设置新密码",31).show();
                 changeItem(myBean);
-//                if (myBean.right_text.equals("开")) {
-//                    myBean.right_text = "关";
-//                    SPUtils.putBoolean(mContext, SPUtils.MOBILE_TELECONTROL, false);
-//                } else {
-//                    myBean.right_text = "开";
-//                    SPUtils.putBoolean(mContext, SPUtils.MOBILE_TELECONTROL, true);
-//                }
-//                returnIndex = recyclerViewAdapter.changeItem(myBean);
                 break;
             case 33:
-//                new InputDialog(mContext,"设置新密码",31).show();
                 changeItem(myBean);
-//                if (myBean.right_text.equals("开")) {
-//                    myBean.right_text = "关";
-//                    SPUtils.putBoolean(mContext, SPUtils.GOOGLE_TV_TELECONTROL, false);
-//                } else {
-//                    myBean.right_text = "开";
-//                    SPUtils.putBoolean(mContext, SPUtils.GOOGLE_TV_TELECONTROL, true);
-//                }
-//                returnIndex = recyclerViewAdapter.changeItem(myBean);
                 break;
             case 34:
-//                new InputDialog(mContext,"设置新密码",31).show();
                 changeItem(myBean);
-//                if (myBean.right_text.equals("开")) {
-//                    myBean.right_text = "关";
-//                    SPUtils.putBoolean(mContext, SPUtils.AUTOMATICALLY_SWITCH_THE_DIGITAL_AUDIO_OUTPUT, false);
-//                } else {
-//                    myBean.right_text = "开";
-//                    SPUtils.putBoolean(mContext, SPUtils.AUTOMATICALLY_SWITCH_THE_DIGITAL_AUDIO_OUTPUT, true);
-//                }
-//                returnIndex = recyclerViewAdapter.changeItem(myBean);
                 break;
             case 35:
-//                new InputDialog(mContext,"设置新密码",31).show();
                 changeItem(myBean);
-//                if (myBean.right_text.equals("开")) {
-//                    myBean.right_text = "关";
-//                    SPUtils.putBoolean(mContext, SPUtils.SOUND_SET, false);
-//                } else {
-//                    myBean.right_text = "开";
-//                    SPUtils.putBoolean(mContext, SPUtils.SOUND_SET, true);
-//                }
-//                returnIndex = recyclerViewAdapter.changeItem(myBean);
+                break;
+            case 111:
+                changeItem(myBean);
                 break;
         }
     }
@@ -284,17 +238,20 @@ public class SettingDialog extends Dialog {
     private void changeItem(MyBean myBean) {
         String key = "";
         switch (myBean.tag) {
-            case 31:
+            case 32:
                 key = SPUtils.MOBILE_TELECONTROL;
                 break;
-            case 32:
+            case 33:
                 key = SPUtils.GOOGLE_TV_TELECONTROL;
                 break;
-            case 33:
+            case 34:
                 key = SPUtils.AUTOMATICALLY_SWITCH_THE_DIGITAL_AUDIO_OUTPUT;
                 break;
-            case 34:
+            case 35:
                 key = SPUtils.SOUND_SET;
+                break;
+            case 111:
+                myBean.right_text = Utils.switchWIFI(mContext) ? "开启" : "关闭";
                 break;
         }
         switch (myBean.right_text) {
@@ -315,20 +272,6 @@ public class SettingDialog extends Dialog {
                 SPUtils.putString(mContext, key, myBean.right_text);
                 break;
         }
-//        if (myBean.right_text.equals("开")) {
-//            myBean.right_text = "关";
-//            SPUtils.putBoolean(mContext, key, false);
-//        } else if (){
-//            myBean.right_text = "开";
-//            SPUtils.putBoolean(mContext, key, true);
-//        }
-//        if (myBean.right_text.equals("PCM")) {
-//            myBean.right_text = "HDMI";
-//            SPUtils.putString(mContext, key, myBean.right_text);
-//        } else {
-//            myBean.right_text = "PCM";
-//            SPUtils.putString(mContext, key, myBean.right_text);
-//        }
         returnIndex = recyclerViewAdapter.changeItem(myBean);
     }
 
@@ -343,7 +286,6 @@ public class SettingDialog extends Dialog {
 
     @Override
     public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
-
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             int tag = recyclerViewAdapter.getMyBeanList().get(0).tag;
             char[] charArray = String.valueOf(tag).toCharArray();
