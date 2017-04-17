@@ -202,12 +202,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (wifiNetInfo != null && wifiNetInfo.isConnected()) {
                     iv_network_icon.setImageResource(R.drawable.icon_wifi);
+                    Log.i(TAG, " -=-=-=-=- onReceive: icon_wifi:");
                 } else if (etherNetInfo != null && etherNetInfo.isConnected()) {
                     iv_network_icon.setImageResource(R.drawable.icon_connected);
+                    Log.i(TAG, " -=-=-=-=- onReceive: icon_connected:");
                 } else if (mobileNetInfo != null && mobileNetInfo.isConnected()) {
                     iv_network_icon.setImageResource(R.drawable.icon_connected);
+                    Log.i(TAG, " -=-=-=-=- onReceive: icon_connected:");
                 } else {
                     iv_network_icon.setImageResource(R.drawable.icon_disconnected);
+                    Log.i(TAG, " -=-=-=-=- onReceive: icon_disconnected:");
                 }
 
             }

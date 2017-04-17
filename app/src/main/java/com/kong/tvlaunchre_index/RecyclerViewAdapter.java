@@ -53,11 +53,35 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         int count = this.myBeanList.size();
         this.myBeanList.removeAll(myBeanList);
         notifyItemRangeRemoved(0, count);
+//        notifyDataSetChanged();
     }
 
     public void addItem(MyBean myBean) {
         this.myBeanList.add(myBean);
         notifyItemInserted(0);
+//        notifyDataSetChanged();
+    }
+
+    public void addItem_(MyBean myBean) {
+        for (int i = 0; i < myBeanList.size(); i++) {
+            MyBean bean = myBeanList.get(i);
+            if (bean.left_text.equals(myBean.tag)) {
+                myBeanList.set(i, myBean);
+                notifyItemChanged(i);
+            } else {
+                myBeanList.add(myBean);
+                notifyItemInserted(myBeanList.size() + 1);
+            }
+        }
+//        this.myBeanList.add(myBean);
+//        notifyItemInserted(0);
+    }
+
+    public void removeItem(int position) {
+//        int count = this.myBeanList.size();
+        this.myBeanList.remove(position);
+//        notifyItemRangeRemoved(0, count);
+        notifyItemRemoved(position);
     }
 
     @Override

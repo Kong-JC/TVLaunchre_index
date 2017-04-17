@@ -11,9 +11,8 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
-
-import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -33,7 +32,7 @@ public class Utils {
     private static final String TAG = "Utils";
 
 //    private Context mContext;
-    
+
 //    private static Utils instance;
 //    private Utils (Context context){
 //        this.mContext = context;
@@ -46,17 +45,16 @@ public class Utils {
 //    }
 
     // ----- WIFI -----
-    
-    public static boolean switchWIFI(Context context){
+    public static boolean switchWIFI(Context context) {
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         if (wifiManager.isWifiEnabled()) {
             wifiManager.setWifiEnabled(false);
-        }else{
+        } else {
             wifiManager.setWifiEnabled(true);
         }
         return wifiManager.isWifiEnabled();
     }
-    
+
     public static boolean wifiIsOpen(Context context) {
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         return wifiManager.isWifiEnabled();
@@ -85,7 +83,7 @@ public class Utils {
         return getWiFiIsConn(context) ? wifiInfo.getSSID() : "开启";
     }
 
-    public static boolean connWiFi(Context context, ScanResult scanResult, String password, boolean checked) {
+    public static boolean connWiFi(Context context, ScanResult scanResult, String password) {
         WifiManager manager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         WifiConfiguration config = new WifiConfiguration();
         config.SSID = "\"" + scanResult.SSID + "\"";
@@ -100,11 +98,36 @@ public class Utils {
         config.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
         int netId = manager.addNetwork(config);
         boolean isConn = manager.enableNetwork(netId, true);
-        if (isConn && checked) {
-            SPUtils.putString(context, scanResult.SSID, new Gson().toJson(config));
-            SPUtils.putBoolean(context, scanResult.SSID + "-" + SPUtils.IS_SAVE_WIFI_KEY, true);
-        }
+//        if (isConn && checked) {
+//            SPUtils.putString(context, scanResult.SSID, new Gson().toJson(config));
+//            SPUtils.putBoolean(context, scanResult.SSID + "-" + SPUtils.IS_SAVE_WIFI_KEY, true);
+//        }
         return isConn;
+    }
+
+    public static String getCurrentWiFiSSID(Context context) {
+        WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+//        int wifiState = wifiMgr.getWifiState();
+        WifiInfo info = wifiMgr.getConnectionInfo();
+        String wifiId = (info != null ? info.getSSID() : null);
+
+        Log.i(TAG, " -=-=-=-=- getCurrentWiFiSSID: wifiId:" + wifiId);
+        
+        String[] ss = wifiId.split("\"");
+
+        for (String s : ss) {
+            Log.i(TAG, " -=-=-=-=- getCurrentWiFiSSID: s:" + s);
+        }
+                
+        return wifiId.split("\"").length > 1 ? wifiId.split("\"")[1] : wifiId;
+    }
+
+    public static String getCurrentWiFiNetId(Context context) {
+        WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+//        int wifiState = wifiMgr.getWifiState();
+        WifiInfo info = wifiMgr.getConnectionInfo();
+        String netId = (info != null ? info.getNetworkId() + "" : null);
+        return netId;
     }
 
     public static void autoConnWifi(Context context) {
@@ -112,15 +135,14 @@ public class Utils {
         if (wifiManager.isWifiEnabled() && wifiManager.startScan()) {//扫描可用的无线网络
             List<ScanResult> scanResultList = wifiManager.getScanResults();
             for (ScanResult scanResult : scanResultList) {
-                WifiConfiguration wifiConfiguration = new Gson().fromJson(SPUtils.getString(context, scanResult.SSID), WifiConfiguration.class);
+                String password = SPUtils.getString(context, scanResult.SSID);
                 boolean isAutoConn = SPUtils.getBoolean(context, scanResult.SSID + "-" + SPUtils.IS_SAVE_WIFI_KEY);
 //                Log.i(TAG, " -=-=-=-=- initView: wifiConfig是否为空:" + (wifiConfiguration == null) + " | isAutoConn:" + isAutoConn + " | 以太网是否连接:" + Utils.getEthernetIsConn(context));
 //                Toast.makeText(context, "wifiConfig是否为空:" + (wifiConfiguration == null) +
 //                        "\nisAutoConn:" + isAutoConn + "\n以太网是否连接:" +
 //                        Utils.getEthernetIsConn(context), Toast.LENGTH_SHORT).show();
-                if (wifiConfiguration != null && isAutoConn && !getEthernetIsConn(context)) {
-                    int netId = wifiManager.addNetwork(wifiConfiguration);
-                    boolean isConn = wifiManager.enableNetwork(netId, true);
+                if (password.length() != 0 && isAutoConn && !getEthernetIsConn(context)) {
+                    boolean isConn = connWiFi(context, scanResult, password);
                     Toast.makeText(context, "WIFI是否连接:" + isConn, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -130,9 +152,16 @@ public class Utils {
     public static boolean disconnectWifi(Context context, int netId) {
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         wifiManager.disableNetwork(netId);
+        
+        
         return wifiManager.disconnect();
     }
-
+    public static boolean removeWifi(Context context, int netId) {
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        wifiManager.disableNetwork(netId);
+        wifiManager.removeNetwork(netId);
+        return wifiManager.disconnect();
+    }
 
     // ----- Ethernet -----
     public static boolean getEthernetIsConn(Context context) {
