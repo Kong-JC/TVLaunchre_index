@@ -153,6 +153,7 @@ public class InputDialog extends Dialog implements View.OnClickListener {
                         List<MyBean> myBeanList = new ArrayList<>();
                         myBeanList.add(new MyBean(1111, "系统设置", "", true));
                         myBeanList.add(new MyBean(2222, "默认网址", SPUtils.getString(mContext, SPUtils.ADVANCED_SETTING_URL_KEY), true));
+                        myBeanList.add(new MyBean(3333, "文件管理", "", true));
                         new SettingDialog(mContext, 1111, "高级设置", myBeanList).show();
                         dismiss();
                     } else {
@@ -168,6 +169,7 @@ public class InputDialog extends Dialog implements View.OnClickListener {
                 List<MyBean> myBeanList = new ArrayList<>();
                 myBeanList.add(new MyBean(1111, "系统设置", "", true));
                 myBeanList.add(new MyBean(2222, "默认网址", SPUtils.getString(mContext, SPUtils.ADVANCED_SETTING_URL_KEY), true));
+                myBeanList.add(new MyBean(3333, "文件管理", "", true));
                 new SettingDialog(mContext, 1111, "高级设置", myBeanList).show();
                 break;
             case 2:
@@ -226,6 +228,7 @@ public class InputDialog extends Dialog implements View.OnClickListener {
                 List<MyBean> myBeanList = new ArrayList<>();
                 myBeanList.add(new MyBean(1111, "系统设置", "", true));
                 myBeanList.add(new MyBean(2222, "默认网址", SPUtils.getString(mContext, SPUtils.ADVANCED_SETTING_URL_KEY), true));
+                myBeanList.add(new MyBean(3333, "文件管理", "", true));
                 new SettingDialog(mContext, 11111, "高级设置", myBeanList).show();
                 dismiss();
             }

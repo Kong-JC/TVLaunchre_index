@@ -190,7 +190,7 @@ public class SettingDialog extends Dialog {
             case 2:
                 myBeanList = new ArrayList<>();
                 myBeanList.add(new MyBean(21, "屏幕缩放", "百分百", true));
-                myBeanList.add(new MyBean(22, "屏幕方向", getString(mContext, SCREEN_ORIENTATION).length() == 0 ? "横向" : "纵向", true));
+                myBeanList.add(new MyBean(22, "屏幕方向", getString(mContext, SCREEN_ORIENTATION), true));
                 myBeanList.add(new MyBean(23, "最佳显示模式", getBoolean(mContext, THE_BEST_DISPLAY_MODE) ? "开" : "关", true));
                 myBeanList.add(new MyBean(24, "自定义输出模式", "720p-60hz", true));
                 changeList("显示设置", myBeanList);
@@ -246,6 +246,12 @@ public class SettingDialog extends Dialog {
             case 2222:
                 new InputDialog(mContext, "默认打开网址", 2222).show();
                 dismiss();
+                break;
+            case 3333:
+//                new InputDialog(mContext, "默认打开网址", 2222).show();
+//                dismiss();
+//                com.softwinner.TvdFileManager
+                mContext.startActivity(Utils.getAppIntent(mContext, "com.softwinner.TvdFileManager"));
                 break;
             case 31:
                 new InputDialog(mContext, "设置新密码", 31).show();
